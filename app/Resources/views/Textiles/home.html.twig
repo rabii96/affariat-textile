@@ -1,0 +1,47 @@
+{% include 'base.html.twig' %}
+{% include 'Textiles/searchbar.html.twig' %}
+{% block body %}
+<div class="form-control" style="margin-top: 165px; float: right; width: 60%; padding-bottom: 70px; margin-right: 8%">
+    <h3 style="text-align: center">Choisissez une catégorie</h3> <br>
+    <center>
+        <table>
+            <tr>
+                {% set i=0 %}
+                {% for categorie in categories %}
+                {% if categorie.nomCategorie == "Autre" %}
+                {% else %}
+                <td height="150" width="150" style="border: 1px solid; border-color: #ccc">
+
+                    <a style="margin-left: 5%" href="{{ path('produits_categ', {'categ': categorie.nomCategorie }) }}"><img
+                        style="width: 90%; height: 90%; padding-bottom: 5%"
+                        src="{{ asset('uploads/categories/' ~ categorie.image ) }}"></a>
+                        <a class="btn btn-dark btn-block" style="" href="{{ path('produits') }}/{{ categorie.nomCategorie }}">{{ categorie.nomCategorie }}</a>
+
+                    </td>
+                    {% set i=i+1 %}
+                    {% if i%3 == 0 %}
+                </tr>
+                <td height="40"></td>
+                <tr>
+                    {% else %}
+                    <td width="80"></td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            </table>
+
+        </center>
+
+    </div>
+
+    {% include 'Textiles/villes.html.twig' %}
+
+    <script type="text/javascript">
+        document.getElementById('barreTri').style.display = 'none';
+    </script>
+
+
+
+
+    {% endblock %}

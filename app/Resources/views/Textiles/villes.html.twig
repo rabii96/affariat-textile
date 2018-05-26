@@ -1,0 +1,26 @@
+<div class="form-control" style="width: 23%; margin-left: 4%; padding-left: 40px; position: fixed; margin-top:165px; background-color: rgb(252, 252, 252) ">
+    <h3 >Choisissez une ville</h3>
+    <ul style="list-style: none; display: table; margin-left: 0 ; padding: 0; position: center;">
+        {% for region in regions %}
+            <li style="color: #3f51b5; display: inline-block; width: 50%;margin-bottom: 3px"><a  href="#" onclick="ville('{{ region.nomRegion }}')">{{ region.nomRegion }}</a></li>
+        {% endfor %}
+
+    </ul>
+</div>
+
+<script type="text/javascript">
+    function ville(e) {
+        document.getElementById('region').value = e;
+        document.getElementById('motCle').value = '';
+        document.getElementById('categorie').value = '';
+        {% for region in regions %}
+            document.getElementById("ville{{region.nomRegion}}").style.display= "none";
+            document.getElementById("ville{{region.nomRegion}}").name = "";
+        {% endfor %}
+        x = "ville"+document.getElementById('region').value;
+        document.getElementById(x).style.display="block"; 
+        document.getElementById(x).name = "ville";
+        document.getElementById(x).value = "";
+        document.getElementById("search").submit();
+    }
+</script>

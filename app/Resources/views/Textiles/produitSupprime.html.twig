@@ -1,0 +1,71 @@
+{% include 'base.html.twig' %}
+
+{% block body %}
+
+    <br>
+    <br>
+    <div id="main_div">
+        <div class="form-control" style="width: 60%; float: left; margin-left: 4%; margin-bottom: 5%">
+            <h4 style="padding-left: 15px; color: #1976d2; text-align: center; font-size: xx-large; text-transform: capitalize;">{{ produit.nomprod }}</h4>
+            <div style="font-size:20px; float: right; padding-right: 50px;">
+                <img src="{{ asset('bundles/app/images/map-marker.png') }}" style="width: 20px;">
+                {{ produit.region.nomRegion }}
+            </div>
+            <br>
+            <br>
+            <h3 style="font-weight: bold; text-align: center;">Prix : {{ produit.prix }} DT</h3>
+            <br>
+            <img src="{{ asset('uploads/archive/' ~ produit.image ) }}"
+                 style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%" alt="Image"> <br>
+            <br>
+            <table class="table">
+                <tr>
+                    <th scope="col" style="text-align: right;">Categorie:</th>
+                    <th scope="col" style="font-weight: normal;">{{ produit.categorie.nomCategorie }}</th>
+                    <th scope="col" style="text-align: right;">Region:</th>
+                    <th scope="col" style="font-weight: normal;">{{ produit.region.nomRegion }}</th>
+                </tr>
+                <tr>
+                    <th scope="col" style="text-align: right;">Description:</th>
+                    <td colspan="3">{{ produit.description }} </td>
+                </tr>
+                <tr>
+                    <th scope="col" style="text-align: right;">Date d'ajout:</th>
+                    <td>{% if ( produit.dateAjout | date('j')  ==  'now' | date('j')) %}
+                            Aujourd'hui
+                        {% elseif ( produit.dateAjout | date('j')  ==  'now' | date('j')-1) %}
+                            Hier
+                        {% else %}
+                            {{ produit.dateAjout | localizeddate('none', 'none', null, null, 'd MMMM') }}
+                        {% endif %}</td>
+
+                    <th scope="col" style="text-align: right;">Date de suppression:</th>
+                    <td>{% if ( produit.dateSuppression | date('j')  ==  'now' | date('j')) %}
+                            Aujourd'hui
+                        {% elseif ( produit.dateSuppression | date('j')  ==  'now' | date('j')-1) %}
+                            Hier
+                        {% else %}
+                            {{ produit.dateSuppression | localizeddate('none', 'none', null, null, 'd MMMM') }}
+                        {% endif %}</td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="form-control" style="float: right; width: 30%; margin-right: 4%">
+            <h3 style="font-weight: bold; text-align: center;">Gestion de l'annonce :</h3>
+            <br>
+            <a class="btn btn-success btn-block" href="{{ path('restaurer', {'id': produit.id} ) }}"
+                    style="margin-bottom: 15px; margin-top: 15px">Restaurer
+            </a>
+            <a class="btn btn-danger btn-block" href="{{ path('definitivement', {'id': produit.id} ) }}"
+                    style="margin-bottom: 15px; margin-top: 15px">Supprimer défénitivement
+            </a>
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}

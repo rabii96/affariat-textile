@@ -1,0 +1,179 @@
+{% include 'base.html.twig' %}
+{% block body %}
+
+    <br>
+    <br>
+    <div id="main_div">
+        <div class="form-control" style="width: 57%; float: left; margin-left: 4%; margin-bottom: 5%">
+            <h4 style="padding-left: 15px; color: #1976d2; text-align: center; font-size: xx-large; text-transform: capitalize;">{{ produit.nomprod }}</h4>
+            <div style="font-size:20px; float: right; padding-right: 50px;">
+                <img src="{{ asset('bundles/app/images/map-marker.png') }}" style="width: 20px;">
+                {{ produit.region.nomRegion }}
+            </div>
+            <br>
+            <br>
+            {% if produit.categorie.nomCategorie == 'Offres d\'emploi' %}
+                <h3 style="font-weight: bold; text-align: center;">Salaire : {{ produit.prix }} DT</h3>
+            {% else %}
+                <h3 style="font-weight: bold; text-align: center;">Prix : {{ produit.prix }} DT</h3>
+            {% endif %}
+            <br>
+            <img src="{{ asset('uploads/images/' ~ produit.image ) }}"
+                 style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%" alt="Image"> <br>
+            <br>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" style="text-align: right;">Categorie:</th>
+                    <th scope="col" style="font-weight: normal;">{{ produit.categorie.nomCategorie }}</th>
+                    <th scope="col" style="text-align: right;">Region:</th>
+                    <th scope="col" style="font-weight: normal;">{{ produit.region.nomRegion }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="col" style="text-align: right;">Description:</th>
+                    <td colspan="3">{{ produit.description }} </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="form-control" style="float: right; width: 28%; margin-right: 9%">
+            <h3 style="font-weight: bold; text-align: center;">Contactez l'annonceur:</h3>
+            <div style="text-align: center;">
+                <img src="{{ asset('uploads/profile_images/' ~ produit.idAnnonceur.imageAnnonceur ) }}"
+                     alt="Profile Image" style="height: 150px; width:150px ; border-radius: 300px">
+            </div>
+            <h4 style="text-align: center;">
+            {% if produit.idAnnonceur.prenomAnnonceur!= null and produit.idAnnonceur.nomAnnonceur !=null %}
+                {{ produit.idAnnonceur.prenomAnnonceur }} {{ produit.idAnnonceur.nomAnnonceur }}
+            {% else %}
+                {{ produit.idAnnonceur.username }}
+            {% endif %}
+            </h4>
+            {% if produit.idAnnonceur.numAnnonceur != null and produit.afficherNum==true %}
+            <button class="btn btn-success btn-block" onclick="showNumero()" id="afficher_numero"
+                    style="margin-bottom: 15px; margin-top: 15px">Afficher le numéro
+            </button>
+            {% endif %}
+
+            <button class="btn btn-success btn-block" onclick="showEmail()" id="afficher_email">Afficher émail</button>
+            <br>
+        </div>
+
+
+        {% if (is_granted('ROLE_USER')) %}
+            {% if (produit.idAnnonceur.id == app.user.id) %}
+                <div class="form-control" style="margin-top: 4% ; float: right; width: 28%; margin-right: 9%">
+                    <h3 style="font-weight: bold; text-align: center;">Gestion de l'annonce :</h3>
+                    <br>
+                    <a href="{{ path('modifier', {'id': produit.id }) }}">
+                        <button type="button" class="btn"
+                                style="width: 49%; margin-bottom: 2% ; color: white; background: cornflowerblue;">
+                            Modifier
+                        </button>
+                    </a>
+                    <a href="{{ path('supprimer', {'id': produit.id }) }}">
+                        <button type="button" class="btn btn-danger" style="width: 49%; margin-bottom: 2%">Supprimer
+                        </button>
+                    </a>
+
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="form-control" style="margin-top: 4% ; float: right; width: 28%; margin-right: 9%">
+                <h3 style="font-weight: bold; text-align: center;">Gestion de l'annonce :</h3>
+                <br>
+                <a href="{{ path('modifier', {'id': produit.id }) }}">
+                    <button type="button" class="btn"
+                            style="width: 49%; margin-bottom: 2% ; color: white; background: cornflowerblue;">
+                        Modifier
+                    </button>
+                </a>
+                <a href="{{ path('supprimer', {'id': produit.id }) }}">
+                    <button type="button" class="btn btn-danger" style="width: 49%; margin-bottom: 2%">Supprimer
+                    </button>
+                </a>
+
+            </div>
+        {% endif %}
+
+
+    </div>
+
+
+
+    <div id="email_div" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" style="margin-left: 42%; font-size: x-large">Email :</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center; ">{{ produit.idAnnonceur.emailAnnonceur }}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="hideEmail()">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="numero_div" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" style="margin-left: 37%; font-size: x-large">Téléphone :</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center; ">{{ produit.idAnnonceur.numAnnonceur }}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="hideNumero()">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        function showEmail() {
+            document.getElementById('email_div').style.display = "block";
+            document.getElementById('black_div').style.display = "block";
+        }
+
+        function hideEmail() {
+            document.getElementById('email_div').style.display = "none";
+            document.getElementById('black_div').style.display = "none";
+        }
+
+
+        function showNumero() {
+            document.getElementById('numero_div').style.display = "block";
+            document.getElementById('black_div').style.display = "block";
+        }
+
+        function hideNumero() {
+            document.getElementById('numero_div').style.display = "none";
+            document.getElementById('black_div').style.display = "none";
+        }
+
+        window.onclick = function (e) {
+            if (e.target == document.getElementById('numero_div')) {
+                hideNumero();
+            }
+            if (e.target == document.getElementById('email_div')) {
+                hideEmail();
+            }
+        }
+
+
+    </script>
+{% endblock %}
