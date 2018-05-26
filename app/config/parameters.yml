@@ -1,0 +1,16 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: 566979_at
+    database_user: root
+    database_password: null
+
+    mailer_transport: mail
+    mailer_encryption: ssl
+    auth_mode: login
+    mailer_host: smtp.gmail.com
+    mailer_user: affariat.textile@gmail.com
+    mailer_password: affariat-textile@bec2018
+    locale: fr
+    secret: z8e48zg8z1h8A94GE1J8ETNEs
